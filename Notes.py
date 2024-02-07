@@ -21,15 +21,24 @@ def save_notes(notes):
 # Функция для создания новой заметки
 def create_note():
     notes = load_notes()
-    note = {
-        "id": len(notes) + 1,
-        "title": input("Введите название заметки: "),
-        "body": input("Введите текст заметки: "),
-        "date": datetime.now()
-    }
-    notes.append(note)
-    save_notes(notes)
-    print("Заметка создана.")
+    while True:
+        title = input("Введите название заметки: ")
+        body = input("Введите текст заметки: ")
+        if title == "" or body == "":
+            print("\nОШИБКА: Поля не могут быть пустыми! Повторите попытку!")
+            continue
+        note = {
+            "id": len(notes) + 1,
+            "title": title,
+            "body": body,
+            "date": datetime.now()
+        }
+        notes.append(note)
+        save_notes(notes)
+        print("Заметка создана.")
+        input()
+        break
+    
 
 # Функция для отображения списка заметок
 def list_notes(filter_date=None):
@@ -37,39 +46,85 @@ def list_notes(filter_date=None):
     for note in notes:
         if filter_date is None or note['date'].startswith(filter_date):
             print(f"{note['id']}: {note['title']} ({note['date']})")
+    input()
 
 # Функция для чтения заметки
 def read_note():
     notes = load_notes()
-    id_to_read = int(input("Введите ID заметки: "))
-    note = next((note for note in notes if note["id"] == id_to_read), None)
-    if note:
-        print(f"Название: {note['title']}\nТекст: {note['body']}\nДата: {note['date']}")
-    else:
-        print("Заметка не найдена.")
+    while True:
+        id_to_read = input("Введите ID заметки: ")
+        if id_to_read == "":
+            print("\nОШИБКА: Поле ввода не может быть пустым!")
+            continue
+        if not id_to_read.isdigit():
+            print("\nОШИБКА: Поле ввода не может содержать буквы или десятичные числа!")
+            continue
+        id_to_read = int(id_to_read)
+        note = next((note for note in notes if note["id"] == id_to_read), None)
+        if note:
+            print(f"Название: {note['title']}\nТекст: {note['body']}\nДата: {note['date']}")
+            input()
+        else:
+            print("Заметка не найдена.")
+            input()
+        break
 
 # Функция для редактирования заметки
 def edit_note():
     notes = load_notes()
-    id_to_edit = int(input("Введите ID заметки для редактирования: "))
-    for note in notes:
-        if note["id"] == id_to_edit:
-            note['title'] = input("Введите новое название заметки: ")
-            note['body'] = input("Введите новый текст заметки: ")
-            note['date'] = datetime.now()
-            save_notes(notes)
-            print("Заметка обновлена.")
-            break
-    else:
-        print("Заметка не найдена.")
+    while True:
+        id_to_edit = input("Введите ID заметки для редактирования: ")
+        if id_to_edit == "":
+            print("\nОШИБКА: Поле ввода не может быть пустым!")
+            continue
+        if not id_to_edit.isdigit():
+            print("\nОШИБКА: Поле ввода не может содержать буквы или десятичные числа!")
+            continue
+        id_to_edit = int(id_to_edit)
+        for note in notes:
+            if note["id"] == id_to_edit:
+                new_title = input("Введите новое название заметки: ")
+                new_body = input("Введите новый текст заметки: ")
+                if new_title == "" or new_body == "":
+                    print("\nОШИБКА: Поля не могут быть пустыми! Повторите попытку!")
+                    continue
+                note['title'] = new_title
+                note['body'] = new_body
+                note['date'] = datetime.now()
+                save_notes(notes)
+                print("Заметка обновлена.")
+                input()
+                break
+        else:
+            print("Заметка не найдена.")
+            input()
+        break
 
 # Функция для удаления заметки
 def delete_note():
     notes = load_notes()
-    id_to_delete = int(input("Введите ID заметки для удаления: "))
-    notes = [note for note in notes if note["id"] != id_to_delete]
-    save_notes(notes)
-    print("Заметка удалена.")
+    while True:
+        id_to_delete = input("Введите ID заметки для удаления: ")
+        if id_to_delete == "":
+            print("\nОШИБКА: Поле ввода не может быть пустым!")
+            continue
+        if not id_to_delete.isdigit():
+            print("\nОШИБКА: Поле ввода не может содержать буквы или десятичные числа!")
+            continue
+        id_to_delete = int(id_to_delete)
+        note_found = False
+        for note in notes:
+            if note["id"] == id_to_delete:
+                notes.remove(note)
+                note_found = True
+                break
+        if not note_found:
+            print("\nОШИБКА: Такого ID не существует!")
+            continue
+        save_notes(notes)
+        print("Заметка удалена.")
+        input()
+        break
 
 # Главное меню приложения
 def menu():
