@@ -22,7 +22,7 @@ def save_notes(notes):
 def create_note():
     notes = load_notes()
     while True:
-        title = input("Введите название заметки: ")
+        title = input("\nВведите название заметки: ")
         body = input("Введите текст заметки: ")
         if title == "" or body == "":
             print("\nОШИБКА: Поля не могут быть пустыми! Повторите попытку!")
@@ -35,7 +35,7 @@ def create_note():
         }
         notes.append(note)
         save_notes(notes)
-        print("Заметка создана.")
+        print("\nЗаметка создана.")
         input()
         break
     
@@ -52,7 +52,7 @@ def list_notes(filter_date=None):
 def read_note():
     notes = load_notes()
     while True:
-        id_to_read = input("Введите ID заметки: ")
+        id_to_read = input("\nВведите ID заметки: ")
         if id_to_read == "":
             print("\nОШИБКА: Поле ввода не может быть пустым!")
             continue
@@ -62,10 +62,10 @@ def read_note():
         id_to_read = int(id_to_read)
         note = next((note for note in notes if note["id"] == id_to_read), None)
         if note:
-            print(f"Название: {note['title']}\nТекст: {note['body']}\nДата: {note['date']}")
+            print(f"\nНазвание: {note['title']}\nТекст: {note['body']}\nДата: {note['date']}")
             input()
         else:
-            print("Заметка не найдена.")
+            print("\nЗаметка не найдена.")
             input()
         break
 
@@ -73,7 +73,7 @@ def read_note():
 def edit_note():
     notes = load_notes()
     while True:
-        id_to_edit = input("Введите ID заметки для редактирования: ")
+        id_to_edit = input("\nВведите ID заметки для редактирования: ")
         if id_to_edit == "":
             print("\nОШИБКА: Поле ввода не может быть пустым!")
             continue
@@ -83,7 +83,7 @@ def edit_note():
         id_to_edit = int(id_to_edit)
         for note in notes:
             if note["id"] == id_to_edit:
-                new_title = input("Введите новое название заметки: ")
+                new_title = input("\nВведите новое название заметки: ")
                 new_body = input("Введите новый текст заметки: ")
                 if new_title == "" or new_body == "":
                     print("\nОШИБКА: Поля не могут быть пустыми! Повторите попытку!")
@@ -92,11 +92,11 @@ def edit_note():
                 note['body'] = new_body
                 note['date'] = datetime.now()
                 save_notes(notes)
-                print("Заметка обновлена.")
+                print("\nЗаметка обновлена.")
                 input()
                 break
         else:
-            print("Заметка не найдена.")
+            print("\nЗаметка не найдена.")
             input()
         break
 
@@ -104,7 +104,7 @@ def edit_note():
 def delete_note():
     notes = load_notes()
     while True:
-        id_to_delete = input("Введите ID заметки для удаления: ")
+        id_to_delete = input("\nВведите ID заметки для удаления: ")
         if id_to_delete == "":
             print("\nОШИБКА: Поле ввода не может быть пустым!")
             continue
@@ -122,7 +122,7 @@ def delete_note():
             print("\nОШИБКА: Такого ID не существует!")
             continue
         save_notes(notes)
-        print("Заметка удалена.")
+        print("\nЗаметка удалена.")
         input()
         break
 
@@ -160,7 +160,7 @@ def menu():
         elif choice == '6':
             break
         else:
-            print("Неверная команда. Попробуйте снова.")
+            print("\nНеверная команда. Попробуйте снова.")
 
 # Запуск приложения
 if __name__ == "__main__":
