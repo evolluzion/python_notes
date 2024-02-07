@@ -63,12 +63,16 @@ def list_notes(filter_date=None):
         print("В файле заметок пока пусто!")
         input()
         return
+    filtered_notes = []
     for note in notes:
         if filter_date is None or note['date'].startswith(filter_date):
+            filtered_notes.append(note)
+    if filtered_notes:
+        sorted_notes = sorted(filtered_notes, key=lambda x: (x['date'], x['time']), reverse=True)
+        for note in sorted_notes:
             print(f"{note['id']}: {note['title']} ({note['date']} {note['time']})")
-        else:
-            print("\nИнформация по данному фильтру отсутствует. Проверьте ввод еще раз (ДД.ММ.ГГГГ)!")
-            break
+    else:
+        print("\nИнформация по данному фильтру отсутствует. Проверьте ввод еще раз (ДД.ММ.ГГГГ)!")
     input()
 
 # Функция для чтения заметки
@@ -113,7 +117,9 @@ def edit_note():
                     continue
                 note['title'] = new_title
                 note['body'] = new_body
-                note['date'] = datetime.now()
+                current_datetime = datetime.now()
+                note['date'] = current_datetime.strftime("%d.%m.%Y")
+                note['time'] = current_datetime.strftime("%H:%M:%S")
                 save_notes(notes)
                 print("\nЗаметка обновлена.")
                 input()
