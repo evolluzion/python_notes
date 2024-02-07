@@ -1,9 +1,19 @@
 # Начинаем наш проект по созданию приложения для заметок
 import json
+import random
 from datetime import datetime
 
 # Файл для хранения заметок
 FILE_NAME = 'notes.json'
+
+# Функция генерации уникального ID для заметок
+def generate_unique_id(existing_ids, id_length=4):
+    range_start = 10**(id_length - 1)
+    range_end = (10**id_length) - 1
+    while True:
+        unique_id = random.randint(range_start, range_end)
+        if unique_id not in existing_ids:
+            return unique_id
 
 # Функция для загрузки заметок из файла
 def load_notes():
@@ -21,17 +31,19 @@ def save_notes(notes):
 # Функция для создания новой заметки
 def create_note():
     notes = load_notes()
+    existing_ids = {note[id] for note in notes}
     while True:
         title = input("\nВведите название заметки: ")
         body = input("Введите текст заметки: ")
         if title == "" or body == "":
             print("\nОШИБКА: Поля не могут быть пустыми! Повторите попытку!")
             continue
+        note_id = generate_unique_id(existing_ids, 5)
         note = {
-            "id": len(notes) + 1,
+            "id": note_id,
             "title": title,
             "body": body,
-            "date": datetime.now()
+            "date": datetime.now().isoformat()
         }
         notes.append(note)
         save_notes(notes)
@@ -143,7 +155,7 @@ def menu():
         print("4. Редактировать заметку")
         print("5. Удалить заметку")
         print("6. Выход")
-
+        
         choice = input("\nВыберите действие: ")
 
         if choice == '1':
@@ -160,7 +172,8 @@ def menu():
         elif choice == '6':
             break
         else:
-            print("\nНеверная команда. Попробуйте снова.")
+            print("\nОШИБКА: Неверная команда! Попробуйте снова.")
+            input()
 
 # Запуск приложения
 if __name__ == "__main__":
