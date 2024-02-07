@@ -23,8 +23,8 @@ def create_note():
     notes = load_notes()
     note = {
         "id": len(notes) + 1,
-        "title": input("Введите заголовок заметки: "),
-        "body": input("Введите тело заметки: "),
+        "title": input("Введите название заметки: "),
+        "body": input("Введите текст заметки: "),
         "date": datetime.now()
     }
     notes.append(note)
@@ -44,7 +44,7 @@ def read_note():
     id_to_read = int(input("Введите ID заметки: "))
     note = next((note for note in notes if note["id"] == id_to_read), None)
     if note:
-        print(f"Заголовок: {note['title']}\nТело: {note['body']}\nДата: {note['date']}")
+        print(f"Название: {note['title']}\nТекст: {note['body']}\nДата: {note['date']}")
     else:
         print("Заметка не найдена.")
 
@@ -54,8 +54,8 @@ def edit_note():
     id_to_edit = int(input("Введите ID заметки для редактирования: "))
     for note in notes:
         if note["id"] == id_to_edit:
-            note['title'] = input("Введите новый заголовок заметки: ")
-            note['body'] = input("Введите новое тело заметки: ")
+            note['title'] = input("Введите новое название заметки: ")
+            note['body'] = input("Введите новый текст заметки: ")
             note['date'] = datetime.now()
             save_notes(notes)
             print("Заметка обновлена.")
@@ -74,15 +74,22 @@ def delete_note():
 # Главное меню приложения
 def menu():
     while True:
-        print("\nКонсольное приложение для работы с заметками")
+        print("  ____    _____    __   __   ______  _______  _    _  _     _ ")
+        print(" (____)  (_____)  (__)_(__) (______)(__ _ __)(_)  (_)(_)   (_)")
+        print("(_) _(_)(_)___(_)(_) (_) (_)(_)__      (_)   (_)_(_) (_) _(__)")
+        print(" _ (__) (_______)(_) (_) (_)(____)     (_)   (____)  (_)(_)(_)")
+        print("(_)__(_)(_)   (_)(_)     (_)(_)____    (_)   (_) (_) (__)  (_)")
+        print(" (____) (_)   (_)(_)     (_)(______)   (_)   (_)  (_)(_)   (_)")
+        print("                       by Napolskiy Boris (GeekBrains Student)")
+        print("\nГлавное меню:")
         print("1. Создать заметку")
-        print("2. Список всех заметок")
+        print("2. Вывести список всех заметок")
         print("3. Прочитать заметку")
         print("4. Редактировать заметку")
         print("5. Удалить заметку")
         print("6. Выход")
 
-        choice = input("Выберите действие: ")
+        choice = input("\nВыберите действие: ")
 
         if choice == '1':
             create_note()
