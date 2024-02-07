@@ -31,7 +31,7 @@ def save_notes(notes):
 # Функция для создания новой заметки
 def create_note():
     notes = load_notes()
-    existing_ids = {note[id] for note in notes}
+    existing_ids = {note['id'] for note in notes}
     while True:
         title = input("\nВведите название заметки: ")
         body = input("Введите текст заметки: ")
@@ -43,7 +43,7 @@ def create_note():
             "id": note_id,
             "title": title,
             "body": body,
-            "date": datetime.now().isoformat()
+            "date": datetime.now()
         }
         notes.append(note)
         save_notes(notes)
@@ -58,6 +58,9 @@ def list_notes(filter_date=None):
     for note in notes:
         if filter_date is None or note['date'].startswith(filter_date):
             print(f"{note['id']}: {note['title']} ({note['date']})")
+        else:
+            print("\nИнформация по данному фильтру отсутствует. Проверьте ввод еще раз (ГГГГ-ММ-ДД)!")
+            break
     input()
 
 # Функция для чтения заметки
@@ -161,7 +164,7 @@ def menu():
         if choice == '1':
             create_note()
         elif choice == '2':
-            filter_date = input("Введите дату для фильтрации в формате YYYY-MM-DD или нажмите Enter для показа всех заметок: ")
+            filter_date = input("Введите дату для фильтрации в формате ГГГГ-ММ-ДД или нажмите Enter для показа всех заметок: ")
             list_notes(filter_date)
         elif choice == '3':
             read_note()
