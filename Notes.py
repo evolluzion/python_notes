@@ -39,11 +39,15 @@ def create_note():
             print("\nОШИБКА: Поля не могут быть пустыми! Повторите попытку!")
             continue
         note_id = generate_unique_id(existing_ids, 5)
+        current_datetime = datetime.now()
+        current_date = current_datetime.strftime("%d.%m.%Y")
+        current_time = current_datetime.strftime("%H:%M:%S")
         note = {
             "id": note_id,
             "title": title,
             "body": body,
-            "date": datetime.now()
+            "date": current_date,
+            "time": current_time
         }
         notes.append(note)
         save_notes(notes)
@@ -55,11 +59,15 @@ def create_note():
 # Функция для отображения списка заметок
 def list_notes(filter_date=None):
     notes = load_notes()
+    if not notes:
+        print("В файле заметок пока пусто!")
+        input()
+        return
     for note in notes:
         if filter_date is None or note['date'].startswith(filter_date):
-            print(f"{note['id']}: {note['title']} ({note['date']})")
+            print(f"{note['id']}: {note['title']} ({note['date']} {note['time']})")
         else:
-            print("\nИнформация по данному фильтру отсутствует. Проверьте ввод еще раз (ГГГГ-ММ-ДД)!")
+            print("\nИнформация по данному фильтру отсутствует. Проверьте ввод еще раз (ДД.ММ.ГГГГ)!")
             break
     input()
 
@@ -77,7 +85,7 @@ def read_note():
         id_to_read = int(id_to_read)
         note = next((note for note in notes if note["id"] == id_to_read), None)
         if note:
-            print(f"\nНазвание: {note['title']}\nТекст: {note['body']}\nДата: {note['date']}")
+            print(f"\nНазвание: {note['title']}\nТекст: {note['body']}\nДата: {note['date']} {note['time']}")
             input()
         else:
             print("\nЗаметка не найдена.")
@@ -164,7 +172,7 @@ def menu():
         if choice == '1':
             create_note()
         elif choice == '2':
-            filter_date = input("Введите дату для фильтрации в формате ГГГГ-ММ-ДД или нажмите Enter для показа всех заметок: ")
+            filter_date = input("Введите дату для фильтрации в формате ДД.ММ.ГГГГ или нажмите Enter для показа всех заметок: ")
             list_notes(filter_date)
         elif choice == '3':
             read_note()
